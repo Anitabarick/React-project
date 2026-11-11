@@ -1,118 +1,63 @@
-import { useState } from 'react'
+import React, { useState, useEffect } from "react";
+import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 
-import './App.css'
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Menu from "./pages/Menu";
+import Reservations from "./pages/Reservations";
+import OrderOnline from "./pages/OrderOnline";
+import Login from "./pages/Login";
+import Register from "./pages/Register"; 
+import Contact from "./pages/Contact";
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [theme, setTheme] = useState("light");
+  const [page, setPage] = useState("home");
+
+  useEffect(() => {
+    if (theme === "dark") {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [theme]);
+
+  const renderMainContent = () => {
+    switch (page) {
+      case "home":
+        return <Home setPage={setPage} />;
+      case "about":
+        return <About />;
+      case "menu":
+        return <Menu />;
+      case "reservations":
+        return <Reservations />;
+      case "order-online":
+        return <OrderOnline />;
+      case "login":
+        return <Login setPage={setPage} />;
+      case "register":
+        return <Register setPage={setPage} />;
+      case "contact":
+        return <Contact />;
+      default:
+        return <Home setPage={setPage} />;
+    }
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    /* FIXED: Added dark:bg-zinc-950 and dark:text-slate-100 variants to the parent element wrapper */
+    <div className="bg-white dark:bg-zinc-950 text-gray-900 dark:text-slate-100 canvas-bg min-h-screen transition-colors duration-300 relative flex flex-col justify-between">
+      <div>
+        <Navbar theme={theme} setTheme={setTheme} currentPage={page} setPage={setPage} />
+        <main className="flex-grow">
+          {renderMainContent()}
+        </main>
+      </div>
+      <Footer setPage={setPage} />
+    </div>
+  );
+};
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
-
-export default App
+export default App;
