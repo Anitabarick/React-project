@@ -4,6 +4,7 @@ import { axe } from 'vitest-axe';
 import App from './App';
 import Contact from './pages/Contact';
 import Checkout from './pages/Checkout';
+import Reservations from './pages/Reservations';
 
 describe('Little Lemon Application & Accessibility Tests', () => {
   it('renders the Little Lemon Hero heading on the Home page', () => {
@@ -47,4 +48,5 @@ describe('Little Lemon Application & Accessibility Tests', () => {
     expect(screen.getByText(/Full name is required/i)).toBeInTheDocument();
     expect(screen.getByText(/Street address is required/i)).toBeInTheDocument();
   });
+  
 });
