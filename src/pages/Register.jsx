@@ -2,81 +2,201 @@ import React, { useState } from 'react';
 
 const Register = ({ setPage }) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+  const [formData, setFormData] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    password: ''
+  });
+
+  const [errors, setErrors] = useState({});
+
+  const formatPhoneNumber = (value) => {
+    const digits = value.replace(/\D/g, '').slice(0, 10);
+    if (digits.length === 0) return '';
+    if (digits.length <= 3) return `(${digits}`;
+    if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+    return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
+  };
+
+  const validateRegister = () => {
+    const newErrors = {};
+
+    if (!formData.firstName.trim()) {
+      newErrors.firstName = 'First name is required.';
+    } else if (formData.firstName.trim().length < 2) {
+      newErrors.firstName = 'At least 2 characters.';
+    }
+
+    if (!formData.lastName.trim()) {
+      newErrors.lastName = 'Last name is required.';
+    } else if (formData.lastName.trim().length < 2) {
+      newErrors.lastName = 'At least 2 characters.';
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email address is required.';
+    } else if (!emailRegex.test(formData.email)) {
+      newErrors.email = 'Please enter a valid email address.';
+    }
+
+    const digitsOnly = formData.phone.replace(/\D/g, '');
+    if (!digitsOnly) {
+      newErrors.phone = 'Phone number is required.';
+    } else if (digitsOnly.length !== 10) {
+      newErrors.phone = 'Please enter a valid 10-digit phone number.';
+    }
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required.';
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSignupSubmit = (e) => {
     e.preventDefault();
-    alert('Account created successfully!');
-    setPage('login');
+    if (validateRegister()) {
+      setShowSuccessModal(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setShowSuccessModal(false);
+    setFormData({
+      firstName: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      password: ''
+    });
+    if (setPage) {
+      setPage('login');
+    }
   };
 
   return (
-    <div className="max-w-md mx-auto px-6 py-16 flex flex-col justify-center min-h-[60vh]">
+    <div className="max-w-md mx-auto px-6 py-16 flex flex-col justify-center min-h-[60vh] relative">
       <div className="bg-slate-50 dark:bg-zinc-800 p-8 rounded-2xl border border-slate-100 dark:border-zinc-700/60 shadow-sm flex flex-col gap-6 transition-all">
         
         <h1 className="text-3xl font-serif font-bold text-center text-slate-900 dark:text-zinc-100">
           Create Account
         </h1>
 
-        <form onSubmit={handleSignupSubmit} className="flex flex-col gap-4">
-          <div className="grid grid-cols-2 gap-3">
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-slate-700 dark:text-zinc-200">
-                First Name
+        <form onSubmit={handleSignupSubmit} noValidate className="flex flex-col gap-4">
+          {/* First & Last Name */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-200">
+                First Name *
               </label>
               <input 
                 type="text" 
-                required 
+                value={formData.firstName}
+                onChange={(e) => {
+                  setFormData({ ...formData, firstName: e.target.value });
+                  if (errors.firstName) setErrors({ ...errors, firstName: '' });
+                }}
                 placeholder="Adrian" 
-                className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]" 
+                className={`w-full p-2.5 rounded-lg border ${errors.firstName ? 'border-rose-500 ring-2 ring-rose-500/30' : 'border-slate-300 dark:border-zinc-600'} bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]`} 
               />
+              {errors.firstName && (
+                <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {errors.firstName}
+                </span>
+              )}
             </div>
-            <div>
-              <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-slate-700 dark:text-zinc-200">
-                Last Name
+
+            <div className="flex flex-col gap-1">
+              <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-200">
+                Last Name *
               </label>
               <input 
                 type="text" 
-                required 
+                value={formData.lastName}
+                onChange={(e) => {
+                  setFormData({ ...formData, lastName: e.target.value });
+                  if (errors.lastName) setErrors({ ...errors, lastName: '' });
+                }}
                 placeholder="Mario" 
-                className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]" 
+                className={`w-full p-2.5 rounded-lg border ${errors.lastName ? 'border-rose-500 ring-2 ring-rose-500/30' : 'border-slate-300 dark:border-zinc-600'} bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]`} 
               />
+              {errors.lastName && (
+                <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                  {errors.lastName}
+                </span>
+              )}
             </div>
           </div>
           
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-slate-700 dark:text-zinc-200">
-              Email Address
+          {/* Email Address */}
+          <div className="flex flex-col gap-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-200">
+              Email Address *
             </label>
             <input 
               type="email" 
-              required 
+              value={formData.email}
+              onChange={(e) => {
+                setFormData({ ...formData, email: e.target.value });
+                if (errors.email) setErrors({ ...errors, email: '' });
+              }}
               placeholder="mario@littlelemon.com" 
-              className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]" 
+              className={`w-full p-2.5 rounded-lg border ${errors.email ? 'border-rose-500 ring-2 ring-rose-500/30' : 'border-slate-300 dark:border-zinc-600'} bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]`} 
             />
+            {errors.email && (
+              <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                {errors.email}
+              </span>
+            )}
           </div>
-          
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-slate-700 dark:text-zinc-200">
-              Phone Number
+          {/* Phone Number */}
+          <div className="flex flex-col gap-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-200">
+              Phone Number *
             </label>
             <input 
               type="tel" 
-              required 
+              inputMode="numeric"
+              maxLength={14}
+              value={formData.phone}
+              onChange={(e) => {
+                const formatted = formatPhoneNumber(e.target.value);
+                setFormData({ ...formData, phone: formatted });
+                if (errors.phone) setErrors({ ...errors, phone: '' });
+              }}
               placeholder="(312) 555-0199" 
-              className="w-full p-2.5 rounded-lg border border-slate-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]" 
+              className={`w-full p-2.5 rounded-lg border ${errors.phone ? 'border-rose-500 ring-2 ring-rose-500/30' : 'border-slate-300 dark:border-zinc-600'} bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]`} 
             />
+            {errors.phone && (
+              <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                {errors.phone}
+              </span>
+            )}
           </div>
           
-          <div>
-            <label className="block text-xs font-bold uppercase tracking-wider mb-1.5 text-slate-700 dark:text-zinc-200">
-              Set Password
+          {/* Password */}
+          <div className="flex flex-col gap-1">
+            <label className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-zinc-200">
+              Set Password *
             </label>
             <div className="relative w-full">
               <input 
                 type={showPassword ? "text" : "password"} 
-                required 
+                value={formData.password}
+                onChange={(e) => {
+                  setFormData({ ...formData, password: e.target.value });
+                  if (errors.password) setErrors({ ...errors, password: '' });
+                }}
                 placeholder="Choose a secure password" 
-                className="w-full p-2.5 pr-10 rounded-lg border border-slate-300 dark:border-zinc-600 bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]" 
+                className={`w-full p-2.5 pr-10 rounded-lg border ${errors.password ? 'border-rose-500 ring-2 ring-rose-500/30' : 'border-slate-300 dark:border-zinc-600'} bg-white dark:bg-zinc-900 text-sm text-slate-900 dark:text-zinc-100 placeholder-slate-400 dark:placeholder-zinc-500 focus:outline-2 focus:outline-[#495E57]`} 
               />
               
               {/* Interactive Vector Eye Graphic Button */}
@@ -98,6 +218,11 @@ const Register = ({ setPage }) => {
                 )}
               </button>
             </div>
+            {errors.password && (
+              <span className="text-xs font-semibold text-rose-600 dark:text-rose-400">
+                {errors.password}
+              </span>
+            )}
           </div>
 
           <button type="submit" className="w-full bg-[#495E57] text-[#F4CE14] dark:bg-[#F4CE14] dark:text-slate-950 font-bold p-3 rounded-xl text-sm shadow-md cursor-pointer hover:opacity-90 mt-2 transition-all">
@@ -110,7 +235,7 @@ const Register = ({ setPage }) => {
             Already have an account?{' '}
             <button 
               type="button" 
-              onClick={() => setPage('login')} 
+              onClick={() => setPage && setPage('login')} 
               className="text-[#495E57] dark:text-[#F4CE14] font-bold hover:underline cursor-pointer"
             >
               Sign in here
@@ -119,6 +244,31 @@ const Register = ({ setPage }) => {
         </div>
 
       </div>
+
+      {/* Registration Success Popup Modal */}
+      {showSuccessModal && (
+        <div className="fixed inset-0 bg-black/70 backdrop-blur-xs flex items-center justify-center z-50 px-4">
+          <div className="bg-white dark:bg-zinc-900 border border-slate-200 dark:border-zinc-800 rounded-2xl p-8 max-w-sm w-full text-center shadow-2xl">
+            <div className="w-14 h-14 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-bold">
+              ✓
+            </div>
+            <h3 className="text-2xl font-serif font-bold text-slate-900 dark:text-white mb-2">
+              Account Created!
+            </h3>
+            <p className="text-sm text-slate-600 dark:text-slate-300 mb-6">
+              Welcome to Little Lemon, <span className="font-semibold text-slate-900 dark:text-white">{formData.firstName}</span>! Your account is ready.
+            </p>
+            <button
+              type="button"
+              onClick={handleCloseModal}
+              className="w-full bg-[#F4CE14] hover:bg-[#e2be0d] text-slate-900 font-bold py-3 rounded-xl shadow-sm transition-all cursor-pointer uppercase tracking-wider text-xs"
+            >
+              Go to Sign In
+            </button>
+          </div>
+        </div>
+      )}
+      
     </div>
   );
 };

@@ -1,8 +1,8 @@
-import React, { useState } from 'react'; // Added useState to track mobile opening toggle
+import React, { useState } from 'react';
 import assets from '../assets/assets'; 
 
-const Navbar = ({ theme, setTheme, currentPage, setPage }) => {
-  const [isMobileOpen, setIsMobileOpen] = useState(false); // Mobile drawer visible switch flag
+const Navbar = ({ theme, setTheme, currentPage, setPage, cartCount = 0 }) => {
+  const [isMobileOpen, setIsMobileOpen] = useState(false);
 
   const toggleTheme = () => {
     setTheme(theme === 'light' ? 'dark' : 'light');
@@ -18,7 +18,6 @@ const Navbar = ({ theme, setTheme, currentPage, setPage }) => {
     { id: 'contact', name: 'Contact' },
   ];
 
-  // Helper action to click links and shut the mobile panel window automatically
   const handleMobileLinkClick = (id) => {
     setPage(id);
     setIsMobileOpen(false);
@@ -53,8 +52,29 @@ const Navbar = ({ theme, setTheme, currentPage, setPage }) => {
         </nav>
 
         {/* Functional Control Action Utility Buttons Box */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-3">
           
+          {/* Shopping Cart Icon & Live Counter Badge */}
+          <button
+            type="button"
+            onClick={() => handleMobileLinkClick('cart')}
+            aria-label="View Shopping Cart"
+            className={`relative p-2 rounded-full cursor-pointer transition-all duration-200 hover:bg-gray-200/50 dark:hover:bg-gray-800/50 ${
+              currentPage === 'cart'
+                ? 'text-amber-600 dark:text-[#F4CE14]'
+                : 'text-slate-700 dark:text-slate-200'
+            }`}
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+            {cartCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 bg-[#F4CE14] text-slate-950 text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center shadow-sm">
+                {cartCount}
+              </span>
+            )}
+          </button>
+
           {/* Light/Dark Toggle Switcher */}
           <button 
             onClick={toggleTheme}
@@ -68,7 +88,7 @@ const Navbar = ({ theme, setTheme, currentPage, setPage }) => {
             />
           </button>
 
-          {/* 🍔 RESPONSIVE MOBILE HAMBURGER BUTTON (Hidden on Desktop) */}
+          {/* RESPONSIVE MOBILE HAMBURGER BUTTON (Hidden on Desktop) */}
           <button 
             onClick={() => setIsMobileOpen(!isMobileOpen)}
             className="flex lg:hidden p-2 rounded-md hover:bg-gray-200/50 dark:hover:bg-gray-800/50 focus:outline-none cursor-pointer text-slate-700 dark:text-slate-200"
@@ -86,7 +106,7 @@ const Navbar = ({ theme, setTheme, currentPage, setPage }) => {
         </div>
       </div>
 
-      {/* --- 📱 RESPONSIVE MOBILE EXPANDABLE LINK OVERLAY DRAWER PANEL --- */}
+      {/* ---  RESPONSIVE MOBILE EXPANDABLE LINK OVERLAY DRAWER PANEL --- */}
       <div 
         className={`lg:hidden w-full border-b border-gray-200/50 dark:border-zinc-800 transition-all duration-300 ease-in-out overflow-hidden shadow-lg bg-white/95 dark:bg-zinc-900/95 backdrop-blur-md
           ${isMobileOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'}`}

@@ -3,7 +3,7 @@
 
 @import "tailwindcss";
 
-/* 💡 FIXED: Registers manual class strategy in Tailwind v4 so dark: classes activate */
+/*  Registers manual class strategy in Tailwind v4 so dark: classes activate */
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* ================= 1. CUSTOM BRANDING COLORS (VANILLA CSS) ================= */
@@ -37,4 +37,21 @@ h1, h2, h3, h4 {
 .dark .navbar-bg {
   background-color: #0d0d0f !important;
   border-color: #242427 !important;
+}
+/* ================= LIGHT MODE ACCESSIBILITY & CARD CONTRAST ================= */
+html:not(.dark) .bg-slate-50 {
+  background-color: #eceff1 !important; /* Distinct warm-cool light gray surface */
+}
+
+html:not(.dark) .bg-slate-100 {
+  background-color: #e2e8f0 !important; /* Higher-contrast pills, search bar & cards */
+}
+
+html:not(.dark) .border-slate-100,
+html:not(.dark) .border-slate-200 {
+  border-color: #cbd5e1 !important; /* Clear, accessible card & input borders */
+}
+
+html:not(.dark) .text-slate-500 {
+  color: #334155 !important; /* Darker body text for WCAG AA contrast compliance */
 }
