@@ -63,12 +63,19 @@ const App = () => {
             cartItems={cartItems}
             setCartItems={setCartItems}
           />
+        )
+         case "reservations":
+        return <Reservations setPage={setPage} />;
+        case "order-online":
+        return (
+          <OrderOnline
+            setPage={setPage}
+            addToCart={addToCart}
+            cartItems={cartItems}
+            setCartItems={setCartItems}
+          />
         );
 
-      case "reservations":
-        return <Reservations setPage={setPage} />;
-      case "order-online":
-        return <OrderOnline setPage={setPage} addToCart={addToCart} />;
       case "login":
         return <Login setPage={setPage} />;
       case "register":

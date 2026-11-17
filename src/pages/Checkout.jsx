@@ -83,9 +83,15 @@ const Checkout = ({ setPage, cartItems = [], setCartItems }) => {
       if (cardDigits.length !== 16) {
         newErrors.cardNumber = 'Please enter a valid 16-digit card number.';
       }
-      if (formData.expiry.length !== 5) {
+            if (formData.expiry.length !== 5) {
         newErrors.expiry = 'Enter MM/YY.';
+      } else {
+        const [expMonth, expYear] = formData.expiry.split('/').map(Number);
+        if (expMonth < 1 || expMonth > 12 || expYear < 26) {
+          newErrors.expiry = 'Enter a valid future expiry date.';
+        }
       }
+
       if (formData.cvc.length < 3) {
         newErrors.cvc = 'Enter 3–4 digits.';
       }
@@ -445,12 +451,18 @@ const Checkout = ({ setPage, cartItems = [], setCartItems }) => {
             </div>
 
             <button
-              type="button"
-              onClick={handleCompleteOrder}
-              className="w-full bg-[#F4CE14] hover:bg-[#e2be0d] text-slate-900 font-bold py-3.5 rounded-xl shadow-md transition-all cursor-pointer text-sm uppercase tracking-wider mt-1"
-            >
-              Confirm & Pay ${total.toFixed(2)}
-            </button>
+  type="button"
+  disabled={cartItems.length === 0}
+  onClick={handleCompleteOrder}
+  className={`w-full font-bold py-3.5 rounded-xl shadow-md transition-all text-sm uppercase tracking-wider mt-1 ${
+    cartItems.length === 0
+      ? 'bg-slate-400 text-slate-700 cursor-not-allowed opacity-60'
+      : 'bg-[#F4CE14] hover:bg-[#e2be0d] text-slate-900 cursor-pointer'
+  }`}
+>
+  {cartItems.length === 0 ? 'Cart is Empty' : `Confirm & Pay $${total.toFixed(2)}`}
+</button>
+
           </div>
 
         </form>
