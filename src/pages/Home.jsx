@@ -89,7 +89,7 @@ const Home = ({ setPage }) => {
       {/* ================= SPECIALS ================= */}
       <section className="max-w-7xl mx-auto px-6 sm:px-12 lg:px-24 xl:px-32 pt-16 md:pt-28 pb-16">
         <div className="flex justify-between items-center mb-10">
-          <h3 className="text-4xl font-serif font-bold text-slate-900 dark:text-white">Specials</h3>
+          <h2 className="text-4xl font-serif font-bold text-slate-900 dark:text-white">Specials</h2>
           <button
             onClick={() => (setPage ? setPage('menu') : null)}
             className="bg-black text-white dark:bg-white dark:text-black text-xs font-semibold px-5 py-2.5 rounded-sm hover:opacity-80 transition-all cursor-pointer"
@@ -111,7 +111,7 @@ const Home = ({ setPage }) => {
 
               <div className="p-5 flex flex-col flex-grow">
                 <div className="flex justify-between items-center mb-3">
-                  <h4 className="font-bold text-lg text-slate-900 dark:text-white">{dish.name}</h4>
+                  <h3 className="font-bold text-lg text-slate-900 dark:text-white">{dish.name}</h3>
                   <span className="text-amber-600 dark:text-amber-400 font-bold">{dish.price}</span>
                 </div>
                 <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed mb-6 flex-grow">{dish.description}</p>
@@ -132,7 +132,7 @@ const Home = ({ setPage }) => {
       {/* ================= TESTIMONIALS ================= */}
       <section className="bg-slate-200 dark:bg-zinc-900 py-16 px-6 sm:px-12 lg:px-24 xl:px-32 text-center transition-colors duration-300">
         <div className="max-w-7xl mx-auto">
-          <h3 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-10">Testimonials</h3>
+          <h2 className="text-3xl font-serif font-bold text-slate-900 dark:text-white mb-10">Testimonials</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                        {testimonials.map((t, idx) => (
               <div 
@@ -140,7 +140,7 @@ const Home = ({ setPage }) => {
                 className="bg-white dark:bg-zinc-800 p-5 rounded-md shadow-sm hover:shadow-lg border border-gray-100 dark:border-zinc-700/50 flex flex-col items-center text-center transition-all duration-300 ease-out hover:scale-[1.03] hover:-translate-y-1"
               >
                 <img src={t.image} alt={t.name} className="w-30 h-30 rounded-full object-cover object-top mb-5 border border-slate-200 dark:border-zinc-700" />
-                <h5 className="font-bold text-sm text-slate-900 dark:text-white mb-3">{t.name}</h5>
+                <h3 className="font-bold text-sm text-slate-900 dark:text-white mb-3">{t.name}</h3>
                 <div className="w-full text-left bg-slate-50 dark:bg-zinc-950 p-3 rounded-md flex flex-col gap-1.5 transition-colors duration-300">
                   <span className="text-[10px] uppercase tracking-wider font-bold text-slate-400">Review</span>
                   <p className="text-xs text-slate-600 dark:text-slate-200 min-h-[48px] leading-normal">{t.review}</p>
@@ -162,12 +162,12 @@ const Home = ({ setPage }) => {
           
           {/* Left Column: Story Text */}
           <div className="flex flex-col items-start">
-            <h3 className="text-5xl font-serif font-bold text-slate-900 dark:text-white mb-1">
+            <h2 className="text-5xl font-serif font-bold text-slate-900 dark:text-white mb-1">
               Little Lemon
-            </h3>
-            <h4 className="text-2xl font-sans text-slate-700 dark:text-slate-300 mb-6">
+            </h2>
+            <h3 className="text-2xl font-sans text-slate-700 dark:text-slate-300 mb-6">
               Chicago
-            </h4>
+            </h3>
             <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed max-w-md">
               Located in Chicago, Little Lemon is renowned for its delectable dishes made from fresh, local ingredients. Offering a cozy ambiance and attentive service, it's an ideal destination for casual dining or memorable gatherings. Enjoy delicious cuisine and traditional hospitality.
             </p>

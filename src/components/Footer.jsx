@@ -27,9 +27,9 @@ const Footer = ({ setPage }) => {
 
         {/* Column 2: Sitemap Navigation */}
         <div>
-          <h4 className="font-bold text-sm text-[#F4CE14] uppercase tracking-wider mb-4">
+          <h2 className="font-bold text-sm text-[#F4CE14] uppercase tracking-wider mb-4">
             Sitemap
-          </h4>
+          </h2>
           <ul className="flex flex-col gap-2.5 text-xs text-slate-200 items-start">
             {footerLinks.map((link, idx) => (
               <li key={idx}>
@@ -46,9 +46,9 @@ const Footer = ({ setPage }) => {
 
         {/* Column 3: Contact */}
         <div>
-          <h4 className="font-bold text-sm text-[#F4CE14] uppercase tracking-wider mb-4">
+          <h2 className="font-bold text-sm text-[#F4CE14] uppercase tracking-wider mb-4">
             Contact
-          </h4>
+          </h2>
           <ul className="flex flex-col gap-2.5 text-xs text-slate-200 leading-relaxed">
             <li>📍 123 Mediterranean Way, Chicago, IL</li>
             <li>📞 (312) 555-0199</li>
@@ -58,9 +58,9 @@ const Footer = ({ setPage }) => {
 
         {/* Column 4: Social Portals with SVG Icons */}
         <div>
-          <h4 className="font-bold text-sm text-[#F4CE14] uppercase tracking-wider mb-4">
+          <h2 className="font-bold text-sm text-[#F4CE14] uppercase tracking-wider mb-4">
             Social Media
-          </h4>
+          </h2>
           <ul className="flex flex-col gap-3 text-xs text-slate-200">
             <li>
               <a 
