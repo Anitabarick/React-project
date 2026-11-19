@@ -23,7 +23,7 @@ import knafeh from './knafeh.png';
 import lemonDessert from './lemon dessert.jpg';
 import little_lemon from './little_lemon.png';
 import Logo_dark from './Logo_dark.svg';
-import capreseCrostini from './CapreseCrostini.png';
+import capreseCrostini from './capreseCrostini.png';
 import loukoumades from './loukoumades.png';
 import mahalabia from './mahalabia.png';
 import meze from './meze.png';
